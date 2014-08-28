@@ -1,0 +1,3 @@
+[submodule "ostumake"]
+	path = ostumake
+	url = git://github.com/gduchene/ostumake.git
