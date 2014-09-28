@@ -144,5 +144,8 @@ let () =
         List.iter (Printlambda.lambda pp >> Format.print_newline) lambda
       ;
 
-      List.iter (fun l -> ignore @$ eval env [] l) lambda
+      List.iter (fun l -> ignore @$ eval env [] l) lambda;
+
+      if !denv then
+        Environment.dump env stderr
     end
