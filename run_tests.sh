@@ -13,7 +13,7 @@ for input in *.ml; do
     if ../tamasheq -denv -o "$tmp" "$input" > "$output" 2>&1; then
         if cmp -s "$expected" "$output"; then
             printf "%-20s\tSUCCESS\n" "$name" >&2
-            rm "$tmp"/*
+            rm "$tmp/$name"*
         else
             printf "%-20s\tFAILURE\n" "$name" >&2
             failure_count=$((failure_count + 1))
