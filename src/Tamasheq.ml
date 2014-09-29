@@ -27,6 +27,7 @@ let files  = Queue.create ()
 let hooks  = Queue.create ()
 let intfs  = Queue.create ()
 let outdir = ref "."
+let test   = ref false
 
 let load_mli filename outdir =
   let open Pparse    in
@@ -108,6 +109,7 @@ let () =
     "-dlam", Unit   (fun () -> denv := not (!dlam)), " Print the Lambda AST";
     "-h"   , String (fun s  -> Queue.add s hooks)  , "<hook> Run <hook>";
     "-o"   , String (fun s  -> outdir := s)        , "<dir> Output files in <dir>";
+    "-t"   , Unit   (fun s  -> test := not (!test)), " Always exit successfully";
     "--"   , Rest   (fun s  -> Queue.add s argsk)  , " (undocumented)";
   ]
   in
@@ -144,8 +146,16 @@ let () =
         List.iter (Printlambda.lambda pp >> Format.print_newline) lambda
       ;
 
-      List.iter (fun l -> ignore @$ eval env [] l) lambda;
+      try
+        begin
+          List.iter (fun l -> ignore @$ eval env [] l) lambda;
 
-      if !denv then
-        Environment.dump env stderr
+          if !denv then
+            Environment.dump env stderr
+        end
+      with exn ->
+        if !test then
+          prerr_endline @$ Printexc.to_string exn
+        else
+          raise exn
     end

@@ -10,7 +10,7 @@ for input in *.ml; do
     name="${input%\.ml}"
     output="$tmp/${input/ml/output}"
 
-    if ../tamasheq -denv -o "$tmp" "$input" > "$output" 2>&1; then
+    if ../tamasheq -denv -o "$tmp" "$input" -t > "$output" 2>&1; then
         if cmp -s "$expected" "$output"; then
             printf "%-20s\tSUCCESS\n" "$name" >&2
             rm "$tmp/$name"*
