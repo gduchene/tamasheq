@@ -66,41 +66,39 @@ let rec eval env ks t =
      begin
        match Ident.name id with
        | "Assert_failure" ->
-          let f s i j = Assert_failure (s, i, j) in
+          let hd = List.hd args in
+          let s  = Obj.obj @$ Obj.field hd 0 in
+          let i  = Obj.obj @$ Obj.field hd 1 in
+          let j  = Obj.obj @$ Obj.field hd 2 in
 
-          lift3 (str --> int --> int --> exn) f args
+          Obj.repr @$ Assert_failure (s, i, j)
 
        | "Division_by_zero" -> Obj.repr Division_by_zero
        | "End_of_file"      -> Obj.repr End_of_file
 
-       | "Failure" ->
-          let f s = Failure s in
-
-          lift (str --> exn) f args
-
-       | "Invalid_arg" ->
-          let f s = Invalid_argument s in
-
-          lift (str --> exn) f args
+       | "Failure"     -> lift (str --> exn) (fun s -> Failure s) args
+       | "Invalid_arg" -> lift (str --> exn) (fun s -> Invalid_argument s) args
 
        | "Match_failure" ->
-          let f s i j = Match_failure (s, i, j) in
+          let hd = List.hd args in
+          let s  = Obj.obj @$ Obj.field hd 0 in
+          let i  = Obj.obj @$ Obj.field hd 1 in
+          let j  = Obj.obj @$ Obj.field hd 2 in
 
-          lift3 (str --> int --> int --> exn) f args
+          Obj.repr @$ Match_failure (s, i, j)
 
        | "Not_found"      -> Obj.repr Not_found
        | "Stack_overflow" -> Obj.repr Stack_overflow
        | "Sys_blocked_io" -> Obj.repr Sys_blocked_io
-
-       | "Sys_error" ->
-          let f s = Sys_error s in
-
-          lift (str --> exn) f args
+       | "Sys_error"      -> lift (str --> exn) (fun s -> Sys_error s) args
 
        | "Undefined_recursive_module" ->
-          let f s i j = Undefined_recursive_module (s, i, j) in
+          let hd = List.hd args in
+          let s  = Obj.obj @$ Obj.field hd 0 in
+          let i  = Obj.obj @$ Obj.field hd 1 in
+          let j  = Obj.obj @$ Obj.field hd 2 in
 
-          lift3 (str --> int --> int --> exn) f args
+          Obj.repr @$ Undefined_recursive_module (s, i, j)
 
        | _ ->
           failwith @$ sprintf "unknown global ``%s''!" @$ Ident.name id
