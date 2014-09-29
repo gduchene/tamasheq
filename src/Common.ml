@@ -167,10 +167,10 @@ let module_name =
 let pp = Format.formatter_of_out_channel stdout
 
 let id_not_found id =
-  failwith (sprintf "unknown ID ``%s''" (Ident.name id))
+  failwith @$ sprintf "unknown ID ``%s''" @$ Ident.name id
 
 let unsupported_arity expected got =
-  failwith (sprintf "unsupported arity (expected %d, got %d)" expected got)
+  failwith @$ sprintf "unsupported arity (expected %d, got %d)" expected got
 
 let unsupported_lambda_term t =
   failwith "unsupported lambda term"
