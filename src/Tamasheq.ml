@@ -105,12 +105,12 @@ let load_mls filenames outdir =
 
 let () =
   let args = [
-    "-denv", Unit   (fun () -> denv := not (!denv)), " Print the environment";
-    "-dlam", Unit   (fun () -> denv := not (!dlam)), " Print the Lambda AST";
-    "-h"   , String (fun s  -> Queue.add s hooks)  , "<hook> Run <hook>";
-    "-o"   , String (fun s  -> outdir := s)        , "<dir> Output files in <dir>";
-    "-t"   , Unit   (fun s  -> test := not (!test)), " Always exit successfully";
-    "--"   , Rest   (fun s  -> Queue.add s argsk)  , " (undocumented)";
+    "-denv", Unit   (fun () -> denv := not !denv), " Print the environment";
+    "-dlam", Unit   (fun () -> denv := not !dlam), " Print the Lambda AST";
+    "-h"   , String (fun s  -> Queue.add s hooks), "<hook> Run <hook>";
+    "-o"   , String (fun s  -> outdir := s)      , "<dir> Output files in <dir>";
+    "-t"   , Unit   (fun s  -> test := not !test), " Always exit successfully";
+    "--"   , Rest   (fun s  -> Queue.add s argsk), " (undocumented)";
   ]
   in
   let anon_arg s =
