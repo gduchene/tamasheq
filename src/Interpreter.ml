@@ -333,6 +333,12 @@ and eval_prim env kind vs =
   | Pasrbint Pint64     -> lift2 (int64  --> int --> int64 ) Int64.shift_right     vs
   | Pasrbint Pnativeint -> lift2 (natint --> int --> natint) Nativeint.shift_right vs
 
+  | Pfloatfield i ->
+     lift (any --> float) (fun blk -> Obj.double_field blk i) vs
+
+  | Psetfloatfield i ->
+     lift2 (any --> float --> unit) (fun blk x -> Obj.set_double_field blk i x) vs
+
   | Pnot -> lift (bool --> bool) not vs
 
   | Pbintcomp (kind, cmp) ->
