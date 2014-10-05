@@ -1,0 +1,87 @@
+.Dd Oct 6, 2014
+.Dt TAMASHEQ 1
+.Os
+.Sh NAME
+.Nm tamasheq
+.Nd an OCaml instrumentation tool
+.Sh SYNOPSIS
+.Nm
+.Op Fl denv
+.Op Fl dlam
+.Op Fl h Ar hook
+.Op Fl o Ar dir
+.Op Fl t
+.Ar file
+.Op Ar
+.Sh DESCRIPTION
+.Nm
+is an instrumentation tool that works by running
+.Em hooks
+over OCaml programs.
+.Pp
+.Nm
+takes at least one
+.Ar file
+which must be a
+.Sy .ml
+file.
+.Pp
+.Ar file
+may be one of the following:
+.Pp
+.Bl -bullet -offset Em -compact
+.It
+.Sy .ml
+files
+.It
+.Sy .mli
+files
+.El
+.Pp
+.Nm
+also takes the following parameters:
+.Bl -tag -width 7n -offset Em
+.It Fl denv
+Dump the final environment on stderr.
+.Pp
+The format of the output is not specified and may change in the
+future.
+It is only provided for debugging purposes.
+.It Fl dlam
+Print the lambda AST of every
+.Ar file
+on stderr.
+.Pp
+The format of the output is not specified and may change in the
+future.
+It is only provided for debugging purposes.
+.It Fl h Ar hook
+Load the hook
+.Ar hook .
+.Pp
+Hooks must be
+.Sy .cmo
+files and must register themselves using the
+.Sy register_hook
+function.
+If a hook does not register itself, it will be ignored.
+.It Fl o Ar dir
+Set the output directory to
+.Ar dir .
+.Pp
+By default,
+.Nm
+will output object files into the current working directory.
+.It Fl t
+Always exit with a return code of 0.
+.Pp
+By default,
+.Nm
+will crash if an exception raised in the code being run is not caught.
+This option makes
+.Nm
+catch any escaping exception.
+The exception will then be printed on stderr and
+.Nm
+will exit with a return code of 0.
+.El
