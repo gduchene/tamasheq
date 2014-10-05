@@ -198,3 +198,7 @@ let lift3 (type a) (type b) (type c) (type d)
   function
   | [x; y; z] -> Obj.repr @$ f (cast a x) (cast b y) (cast c z)
   | xs        -> unsupported_arity 3 @$ List.length xs
+
+let string_of_string_option = function
+  | Some str -> str
+  | None     -> ""
